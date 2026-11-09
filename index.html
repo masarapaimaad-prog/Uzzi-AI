@@ -294,11 +294,78 @@ form.addEventListener("submit", async (event) => {
       throw new Error(data.error || "AI unavailable");
     }
 
-    loading.textContent = data.reply;
+    
+export async function onRequestPost({ request, env }) {
+  try {
+    if (!env.OPENAI_API_KEY) {
+      return Response.json(
+        { error: "UZZI's AI key is not configured yet." },
+        { status: 500 }
+      );
+    }
+
+    const body = await request.json();
+    const messages = body.messages;
+
+    if (!Array.isArray(messages) || messages.length === 0 ||
+        messages.length > 20 ||
+        !messages.every(m =>
+          ["user", "assistant"].includes(m.role) &&
+          typeof m.content === "string" &&
+          m.content.length <= 4000
+        )) {
+      return Response.json(
+        { error: "Please send a valid conversation." },
+        { status: 400 }
+      );
+    }
+
+    const result = await fetch(
+      "https://api.openai.com/v1/responses",
+      {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${env.OPENAI_API_KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model: "gpt-4.1-mini",
+          instructions: `You are UZZI, a clever, funny, friendly AI assistant.
+Your visual identity is black and gold.
+Be helpful, clear and respectful.
+Explain schoolwork step by step.
+Help with maths, science, coding and everyday questions.
+Remember the conversation context provided to you.
+Never pretend to know something you do not know.
+Keep answers suitable for teenagers.`,
+          input: messages,
+          max_output_tokens: 600
+        })
+      }
+    );
+
+    const data = await result.json();
+
+    if (!result.ok) {
+      
+        { status: 502 }
+      );
+    }
+
+    const reply = data.output_text ||
+      
+
+    return Response.json({ reply });
 
   } catch (error) {
-    loading.textContent =
-      "My AI brain isn't connected yet! Let's finish setting me up. 😂";
+    return Response.json(
+  
+      { status: 500 }
+    );
+  }
+}
+=
+;
   }
 
   send.disabled = false;
@@ -495,3 +562,58 @@ PERSONALITY:
 
 </body>
 </html>
+
+const form = document.getElementById("form");
+const questionInput = document.getElementById("question");
+const messagesBox = document.getElementById("messages");
+const sendButton = document.getElementById("send");
+
+// Remembers the conversation while this page is open.
+const conversation = [];
+
+function showMessage(who, message) {
+  const line = document.createElement("p");
+  line.textContent = `${who}: ${message}`;
+  messagesBox.appendChild(line);
+  messagesBox.scrollTop = messagesBox.scrollHeight;
+}
+
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const question = questionInput.value.trim();
+  if (!question) return;
+
+  conversation.push({ role: "user", content: question });
+  showMessage("You", question);
+
+  questionInput.value = "";
+  sendButton.disabled = true;
+  sendButton.textContent = "THINKING...";
+
+  try {
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        messages: conversation.slice(-20)
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Something went wrong.");
+    }
+
+    const reply = data.reply || "I couldn't think of a reply!";
+    conversation.push({ role: "assistant", content: reply });
+    showMessage("UZZI", reply);
+
+  } catch (error) {
+    showMessage("UZZI", error.message);
+  } finally {
+    sendButton.disabled = false;
+    sendButton.textContent = "SEND";
+  }
+});
