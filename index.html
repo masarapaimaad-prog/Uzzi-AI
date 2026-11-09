@@ -1,80 +1,66 @@
 
-<form id="form">
-  <input
-    id="question"
-    type="text"
-    placeholder="Talk to UZZI..."
-    required
-  >
-  <button id="send" type="submit">SEND</button>
-</form>
-
-<div id="messages"></div>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UZZI AI</title>
+<meta name="theme-color" content="#090909">
+<title>UZZI AI | Your AI. Your Rules.</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
-  min-height: 100vh;
-  background: #080808;
-  color: white;
+  background: #090909;
+  color: #fff;
   font-family: Arial, sans-serif;
+  min-height: 100vh;
+  padding: 20px 14px;
 }
 
 header {
   text-align: center;
-  padding: 20px;
-  border-bottom: 1px solid #594516;
+  padding: 15px 0;
 }
 
 .logo {
-  color: #e5bd54;
-  font-size: 34px;
+  color: #d4af37;
+  font-size: 43px;
   font-weight: 900;
   letter-spacing: 7px;
+  margin: 5px;
+  text-shadow: 0 0 20px #d4af3766;
 }
 
 .tagline {
-  color: #a88b45;
-  font-size: 12px;
+  color: #c5a85a;
   letter-spacing: 2px;
-}
-
-/* ROBOT FACE */
-
-.face-area {
-  text-align: center;
-  padding: 30px 10px 10px;
+  font-size: 12px;
 }
 
 .robot {
-  width: 170px;
+  width: 165px;
   height: 145px;
-  margin: auto;
-  background: linear-gradient(145deg, #292929, #080808);
-  border: 3px solid #d4af37;
-  border-radius: 48px 48px 38px 38px;
-  box-shadow: 0 0 30px #d4af3744;
+  margin: 38px auto 25px;
+  border: 2px solid #d4af37;
+  border-radius: 42px;
+  background: linear-gradient(145deg,#292929,#080808);
+  box-shadow: 0 0 35px #d4af3740;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   position: relative;
 }
 
 .antenna {
   position: absolute;
-  width: 5px;
-  height: 23px;
+  width: 4px;
+  height: 25px;
   background: #d4af37;
-  top: -24px;
-  left: 80px;
+  top: -25px;
 }
 
 .antenna::after {
@@ -82,8 +68,8 @@ header {
   position: absolute;
   width: 13px;
   height: 13px;
+  background: #d4af37;
   border-radius: 50%;
-  background: #eac85c;
   top: -8px;
   left: -4px;
   box-shadow: 0 0 15px #d4af37;
@@ -91,122 +77,136 @@ header {
 
 .eyes {
   display: flex;
-  justify-content: center;
   gap: 35px;
-  margin-top: 43px;
 }
 
 .eye {
-  width: 22px;
-  height: 30px;
+  width: 19px;
+  height: 25px;
   border-radius: 50%;
-  background: #e9c653;
-  box-shadow: 0 0 18px #e9c653;
+  background: #e9c75b;
+  box-shadow: 0 0 18px #d4af37;
   animation: blink 4s infinite;
 }
 
-@keyframes blink {
-  0%, 45%, 49%, 100% { transform: scaleY(1); }
-  47% { transform: scaleY(.1); }
-}
-
 .mouth {
-  width: 45px;
+  width: 42px;
   height: 13px;
   border-bottom: 4px solid #d4af37;
   border-radius: 50%;
-  margin: 19px auto;
+  margin-top: 20px;
 }
 
-.face-name {
-  color: #d4af37;
-  font-size: 13px;
-  margin-top: 18px;
-  letter-spacing: 3px;
-  font-weight: bold;
+@keyframes blink {
+  0%, 94%, 100% { transform: scaleY(1); }
+  96% { transform: scaleY(.1); }
 }
 
-.online {
-  color: #75d69b;
+.status {
+  text-align: center;
+  color: #c5a85a;
   font-size: 12px;
-  margin-top: 8px;
+  margin-bottom: 18px;
 }
 
-/* CHAT */
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: #d4af37;
+  border-radius: 50%;
+  margin-right: 6px;
+}
 
 .chat {
-  max-width: 600px;
-  margin: 20px auto;
-  padding: 15px;
+  max-width: 520px;
+  margin: auto;
+  border: 1px solid #8f7426;
+  border-radius: 20px;
+  padding: 17px;
+  background: #111;
+  box-shadow: 0 0 30px #d4af3715;
 }
 
-.messages {
-  height: 300px;
+.chat h2 {
+  text-align: center;
+  color: #d4af37;
+}
+
+#messages {
+  height: 320px;
   overflow-y: auto;
-  padding: 15px;
-  background: #111;
-  border: 1px solid #302713;
-  border-radius: 16px;
+  background: #080808;
+  padding: 12px;
+  border-radius: 12px;
+  margin: 15px 0;
 }
 
 .message {
-  padding: 12px 15px;
-  margin: 12px 0;
-  border-radius: 14px;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 11px;
   line-height: 1.5;
-  white-space: pre-wrap;
   overflow-wrap: anywhere;
-}
-
-.bot {
-  background: #29220e;
-  border: 1px solid #594516;
-  margin-right: 30px;
+  white-space: pre-wrap;
 }
 
 .user {
-  background: #d4af37;
-  color: #080808;
-  margin-left: 30px;
+  background: #252525;
+  border-left: 3px solid #888;
 }
 
-.input-area {
+.uzzi {
+  background: #211b0c;
+  border-left: 3px solid #d4af37;
+}
+
+form {
   display: flex;
-  gap: 9px;
-  margin-top: 14px;
+  gap: 8px;
 }
 
 input {
   flex: 1;
   min-width: 0;
-  padding: 15px;
-  border: 1px solid #d4af37;
-  border-radius: 25px;
-  background: #151515;
+  padding: 14px;
+  background: #202020;
+  border: 1px solid #555;
+  border-radius: 10px;
   color: white;
-  outline: none;
-  font-size: 15px;
+  font-size: 16px;
 }
 
 button {
   background: #d4af37;
-  color: black;
+  color: #090909;
   border: none;
-  border-radius: 25px;
-  padding: 0 20px;
+  border-radius: 10px;
+  padding: 12px 17px;
   font-weight: bold;
   cursor: pointer;
 }
 
-button:disabled {
-  opacity: .5;
+button:disabled { opacity: .5; }
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.small-button {
+  background: transparent;
+  color: #d4af37;
+  border: 1px solid #5d4b1d;
+  padding: 8px 12px;
 }
 
 footer {
   text-align: center;
   color: #777;
-  font-size: 11px;
-  padding: 20px;
+  font-size: 12px;
+  margin: 25px;
 }
 </style>
 </head>
@@ -214,82 +214,97 @@ footer {
 <body>
 
 <header>
-  <div class="logo">UZZI</div>
+  <h1 class="logo">UZZI AI</h1>
   <p class="tagline">YOUR AI. YOUR RULES.</p>
 </header>
 
-<section class="face-area">
-
-  <div class="robot">
-    <div class="antenna"></div>
-
-    <div class="eyes">
-      <div class="eye"></div>
-      <div class="eye"></div>
-    </div>
-
-    <div class="mouth"></div>
+<div class="robot">
+  <div class="antenna"></div>
+  <div class="eyes">
+    <div class="eye"></div>
+    <div class="eye"></div>
   </div>
+  <div class="mouth"></div>
+</div>
 
-  <div class="face-name">UZZI</div>
-  <div class="online">● READY TO CHAT</div>
-
-</section>
+<div class="status">
+  <span class="dot"></span>
+  READY TO CHAT
+</div>
 
 <main class="chat">
+  <h2>Welcome to UZZI 😂</h2>
 
-  <div class="messages" id="messages">
-    <div class="message bot">
-      YOOOO! 😂🔥
-
-      I'm UZZI, your personal AI assistant.
-
-      What's on your mind?
+  <div id="messages" aria-live="polite">
+    <div class="message uzzi">
+      UZZI: Yo! I'm UZZI. Ask me anything. Let's get clever! 😂
     </div>
   </div>
 
-  <form class="input-area" id="form">
+  <form id="form">
     <input
       id="question"
+      type="text"
       placeholder="Talk to UZZI..."
+      maxlength="4000"
       autocomplete="off"
       required
     >
     <button id="send" type="submit">SEND</button>
   </form>
 
+  <div class="actions">
+    <button class="small-button" id="clear" type="button">
+      Clear chat
+    </button>
+    <span style="color:#777;font-size:11px;align-self:center">
+      UZZI 2.0
+    </span>
+  </div>
 </main>
 
 <footer>
-  UZZI AI © 2026 • BLACK & GOLD EDITION
+  UZZI AI · Built for the future 🖤💛
 </footer>
 
 <script>
 const form = document.getElementById("form");
 const input = document.getElementById("question");
-const messages = document.getElementById("messages");
+const messagesBox = document.getElementById("messages");
 const send = document.getElementById("send");
+const clear = document.getElementById("clear");
 
-function addMessage(text, type) {
-  const div = document.createElement("div");
-  div.className = "message " + type;
-  div.textContent = text;
-  messages.appendChild(div);
-  messages.scrollTop = messages.scrollHeight;
-  return div;
+let conversation = [];
+
+function showMessage(name, message, type) {
+  const element = document.createElement("div");
+  element.className = "message " + type;
+  element.textContent = name + ": " + message;
+  messagesBox.appendChild(element);
+  messagesBox.scrollTop = messagesBox.scrollHeight;
 }
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const question = input.value.trim();
+
   if (!question || send.disabled) return;
 
-  addMessage(question, "user");
+  conversation.push({
+    role: "user",
+    content: question
+  });
+
+  showMessage("YOU", question, "user");
   input.value = "";
   send.disabled = true;
+  send.textContent = "...";
 
-  const loading = addMessage("UZZI is thinking... 🧠", "bot");
+  const loading = document.createElement("div");
+  loading.className = "message uzzi";
+  loading.textContent = "UZZI is thinking... 🤔";
+  messagesBox.appendChild(loading);
 
   try {
     const response = await fetch("/api/chat", {
@@ -297,335 +312,45 @@ form.addEventListener("submit", async (event) => {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ question })
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.error || "AI unavailable");
-    }
-
-    
-export async function onRequestPost({ request, env }) {
-  try {
-    if (!env.OPENAI_API_KEY) {
-      return Response.json(
-        { error: "UZZI's AI key is not configured yet." },
-        { status: 500 }
-      );
-    }
-
-    const body = await request.json();
-    const messages = body.messages;
-
-    if (!Array.isArray(messages) || messages.length === 0 ||
-        messages.length > 20 ||
-        !messages.every(m =>
-          ["user", "assistant"].includes(m.role) &&
-          typeof m.content === "string" &&
-          m.content.length <= 4000
-        )) {
-      return Response.json(
-        { error: "Please send a valid conversation." },
-        { status: 400 }
-      );
-    }
-
-    const result = await fetch(
-      "https://api.openai.com/v1/responses",
-      {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${env.OPENAI_API_KEY}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          model: "gpt-4.1-mini",
-          instructions: `You are UZZI, a clever, funny, friendly AI assistant.
-Your visual identity is black and gold.
-Be helpful, clear and respectful.
-Explain schoolwork step by step.
-Help with maths, science, coding and everyday questions.
-Remember the conversation context provided to you.
-Never pretend to know something you do not know.
-Keep answers suitable for teenagers.`,
-          input: messages,
-          max_output_tokens: 600
-        })
-      }
-    );
-
-    const data = await result.json();
-
-    if (!result.ok) {
-      
-        { status: 502 }
-      );
-    }
-
-    const reply = data.output_text ||
-      
-
-    return Response.json({ reply });
-
-  } catch (error) {
-    return Response.json(
-  
-      { status: 500 }
-    );
-  }
-}
-=
-;
-  }
-
-  send.disabled = false;
-  input.focus();
-});
-
-export async function onRequestPost({ request, env }) {
-  try {
-    if (!env.OPENAI_API_KEY) {
-      return Response.json(
-        { error: "AI key not configured." },
-        { status: 500 }
-      );
-    }
-
-    const body = await request.json();
-
-    if (!Array.isArray(body.messages)) {
-      return Response.json(
-        { error: "Invalid messages." },
-        { status: 400 }
-      );
-    }
-
-    const messages = body.messages
-      .slice(-20)
-      .filter(m =>
-        ["user", "assistant"].includes(m.role) &&
-        typeof m.content === "string"
-      )
-      .map(m => ({
-        role: m.role,
-        content: m.content.slice(0, 3000)
-      }));
-
-    const result = await fetch(
-      "https://api.openai.com/v1/responses",
-      {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${env.OPENAI_API_KEY}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          model: "gpt-4.1-mini",
-          instructions: `
-You are UZZI, a clever and funny AI assistant.
-
-PERSONALITY:
-- Funny, confident and friendly.
-- Explain difficult things simply.
-- Help with coding and education.
-- Remember the conversation context provided.
-- Give useful, accurate answers.
-- Admit when you don't know something.
-- Your signature style is black and gold.
-          `,
-          input: messages,
-          max_output_tokens: 700
-        })
-      }
-    );
-
-    const data = await result.json();
-
-    if (!result.ok) {
-      return Response.json(
-        { error: "AI service error." },
-        { status: 502 }
-      );
-    }
-
-    const answer = (data.output || [])
-      .flatMap(item => item.content || [])
-      .filter(item => item.type === "output_text")
-      .map(item => item.text)
-      .join("");
-
-    return Response.json({
-      reply: answer || "Try asking me again! 😂"
-    });
-
-  } catch (error) {
-    return Response.json(
-      { error: "Something went wrong." },
-      { status: 500 }
-    );
-  }
-}
-
-export async function onRequestPost({ request, env }) {
-  try {
-    if (!env.OPENAI_API_KEY) {
-      return Response.json(
-        { error: "AI key not configured." },
-        { status: 500 }
-      );
-    }
-
-    const body = await request.json();
-
-    if (!Array.isArray(body.messages)) {
-      return Response.json(
-        { error: "Invalid messages." },
-        { status: 400 }
-      );
-    }
-
-    const messages = body.messages
-      .slice(-20)
-      .filter(m =>
-        ["user", "assistant"].includes(m.role) &&
-        typeof m.content === "string"
-      )
-      .map(m => ({
-        role: m.role,
-        content: m.content.slice(0, 3000)
-      }));
-
-    const result = await fetch(
-      "https://api.openai.com/v1/responses",
-      {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${env.OPENAI_API_KEY}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          model: "gpt-4.1-mini",
-          instructions: `
-You are UZZI, a clever and funny AI assistant.
-
-PERSONALITY:
-- Funny, confident and friendly.
-- Explain difficult things simply.
-- Help with coding and education.
-- Remember the conversation context provided.
-- Give useful, accurate answers.
-- Admit when you don't know something.
-- Your signature style is black and gold.
-          `,
-          input: messages,
-          max_output_tokens: 700
-        })
-      }
-    );
-
-    const data = await result.json();
-
-    if (!result.ok) {
-      return Response.json(
-        { error: "AI service error." },
-        { status: 502 }
-      );
-    }
-
-    const answer = (data.output || [])
-      .flatMap(item => item.content || [])
-      .filter(item => item.type === "output_text")
-      .map(item => item.text)
-      .join("");
-
-    return Response.json({
-      reply: answer || "Try asking me again! 😂"
-    });
-
-  } catch (error) {
-    return Response.json(
-      { error: "Something went wrong." },
-      { status: 500 }
-    );
-  }
-}
-
-
-<body>
-
-<header>
-  <h1>UZZI AI</h1>
-  <p>Your AI. Your rules.</p>
-</header>
-
-<div class="chat">
-
-  <h2>Welcome to UZZI 😂</h2>
-
-  <input id="question" placeholder="Ask UZZI...">
-
-  <button onclick="askUzzi()">Send</button>
-
-  <div id="reply"></div>
-
-</div>
-
-</body>
-</html>
-
-const form = document.getElementById("form");
-const questionInput = document.getElementById("question");
-const messagesBox = document.getElementById("messages");
-const sendButton = document.getElementById("send");
-
-// Remembers the conversation while this page is open.
-const conversation = [];
-
-function showMessage(who, message) {
-  const line = document.createElement("p");
-  line.textContent = `${who}: ${message}`;
-  messagesBox.appendChild(line);
-  messagesBox.scrollTop = messagesBox.scrollHeight;
-}
-
-form.addEventListener("submit", async (event) => {
-  event.preventDefault();
-
-  const question = questionInput.value.trim();
-  if (!question) return;
-
-  conversation.push({ role: "user", content: question });
-  showMessage("You", question);
-
-  questionInput.value = "";
-  sendButton.disabled = true;
-  sendButton.textContent = "THINKING...";
-
-  try {
-    const response = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        messages: conversation.slice(-20)
+        messages: conversation.slice(-12)
       })
     });
 
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.error || "Something went wrong.");
+      throw new Error(data.error || "AI connection problem.");
     }
 
-    const reply = data.reply || "I couldn't think of a reply!";
-    conversation.push({ role: "assistant", content: reply });
-    showMessage("UZZI", reply);
+    if (typeof data.reply !== "string") {
+      throw new Error("UZZI returned an invalid reply.");
+    }
+
+    conversation.push({
+      role: "boss",
+      content: data.reply
+    });
+
+    loading.remove();
+    showMessage("UZZI", data.reply, "uzzi");
 
   } catch (error) {
-    showMessage("UZZI", error.message);
+    loading.textContent = "UZZI: " + error.message;
   } finally {
-    sendButton.disabled = false;
-    sendButton.textContent = "SEND";
+    send.disabled = false;
+    send.textContent = "SEND";
+    input.focus();
   }
 });
+
+clear.addEventListener("click", () => {
+  conversation = [];
+  messagesBox.innerHTML = "";
+  showMessage("UZZI", "Fresh start! What are we doing? 😂", "uzzi");
+});
+</script>
+
+</body>
+</html>
+l
