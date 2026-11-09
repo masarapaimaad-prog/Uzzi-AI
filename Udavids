@@ -1,0 +1,310 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UZZI AI</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #080808;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  text-align: center;
+  padding: 20px;
+  border-bottom: 1px solid #594516;
+}
+
+.logo {
+  color: #e5bd54;
+  font-size: 34px;
+  font-weight: 900;
+  letter-spacing: 7px;
+}
+
+.tagline {
+  color: #a88b45;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+/* ROBOT FACE */
+
+.face-area {
+  text-align: center;
+  padding: 30px 10px 10px;
+}
+
+.robot {
+  width: 170px;
+  height: 145px;
+  margin: auto;
+  background: linear-gradient(145deg, #292929, #080808);
+  border: 3px solid #d4af37;
+  border-radius: 48px 48px 38px 38px;
+  box-shadow: 0 0 30px #d4af3744;
+  position: relative;
+}
+
+.antenna {
+  position: absolute;
+  width: 5px;
+  height: 23px;
+  background: #d4af37;
+  top: -24px;
+  left: 80px;
+}
+
+.antenna::after {
+  content: "";
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #eac85c;
+  top: -8px;
+  left: -4px;
+  box-shadow: 0 0 15px #d4af37;
+}
+
+.eyes {
+  display: flex;
+  justify-content: center;
+  gap: 35px;
+  margin-top: 43px;
+}
+
+.eye {
+  width: 22px;
+  height: 30px;
+  border-radius: 50%;
+  background: #e9c653;
+  box-shadow: 0 0 18px #e9c653;
+  animation: blink 4s infinite;
+}
+
+@keyframes blink {
+  0%, 45%, 49%, 100% { transform: scaleY(1); }
+  47% { transform: scaleY(.1); }
+}
+
+.mouth {
+  width: 45px;
+  height: 13px;
+  border-bottom: 4px solid #d4af37;
+  border-radius: 50%;
+  margin: 19px auto;
+}
+
+.face-name {
+  color: #d4af37;
+  font-size: 13px;
+  margin-top: 18px;
+  letter-spacing: 3px;
+  font-weight: bold;
+}
+
+.online {
+  color: #75d69b;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+/* CHAT */
+
+.chat {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 15px;
+}
+
+.messages {
+  height: 300px;
+  overflow-y: auto;
+  padding: 15px;
+  background: #111;
+  border: 1px solid #302713;
+  border-radius: 16px;
+}
+
+.message {
+  padding: 12px 15px;
+  margin: 12px 0;
+  border-radius: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.bot {
+  background: #29220e;
+  border: 1px solid #594516;
+  margin-right: 30px;
+}
+
+.user {
+  background: #d4af37;
+  color: #080808;
+  margin-left: 30px;
+}
+
+.input-area {
+  display: flex;
+  gap: 9px;
+  margin-top: 14px;
+}
+
+input {
+  flex: 1;
+  min-width: 0;
+  padding: 15px;
+  border: 1px solid #d4af37;
+  border-radius: 25px;
+  background: #151515;
+  color: white;
+  outline: none;
+  font-size: 15px;
+}
+
+button {
+  background: #d4af37;
+  color: black;
+  border: none;
+  border-radius: 25px;
+  padding: 0 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: .5;
+}
+
+footer {
+  text-align: center;
+  color: #777;
+  font-size: 11px;
+  padding: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">UZZI</div>
+  <p class="tagline">YOUR AI. YOUR RULES.</p>
+</header>
+
+<section class="face-area">
+
+  <div class="robot">
+    <div class="antenna"></div>
+
+    <div class="eyes">
+      <div class="eye"></div>
+      <div class="eye"></div>
+    </div>
+
+    <div class="mouth"></div>
+  </div>
+
+  <div class="face-name">UZZI</div>
+  <div class="online">● READY TO CHAT</div>
+
+</section>
+
+<main class="chat">
+
+  <div class="messages" id="messages">
+    <div class="message bot">
+      YOOOO! 😂🔥
+
+      I'm UZZI, your personal AI assistant.
+
+      What's on your mind?
+    </div>
+  </div>
+
+  <form class="input-area" id="form">
+    <input
+      id="question"
+      placeholder="Talk to UZZI..."
+      autocomplete="off"
+      required
+    >
+    <button id="send" type="submit">SEND</button>
+  </form>
+
+</main>
+
+<footer>
+  UZZI AI © 2026 • BLACK & GOLD EDITION
+</footer>
+
+<script>
+const form = document.getElementById("form");
+const input = document.getElementById("question");
+const messages = document.getElementById("messages");
+const send = document.getElementById("send");
+
+function addMessage(text, type) {
+  const div = document.createElement("div");
+  div.className = "message " + type;
+  div.textContent = text;
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+  return div;
+}
+
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const question = input.value.trim();
+  if (!question || send.disabled) return;
+
+  addMessage(question, "user");
+  input.value = "";
+  send.disabled = true;
+
+  const loading = addMessage("UZZI is thinking... 🧠", "bot");
+
+  try {
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ question })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "AI unavailable");
+    }
+
+    loading.textContent = data.reply;
+
+  } catch (error) {
+    loading.textContent =
+      "My AI brain isn't connected yet! Let's finish setting me up. 😂";
+  }
+
+  send.disabled = false;
+  input.focus();
+});
+</script>
+
+</body>
+</html>
