@@ -304,7 +304,194 @@ form.addEventListener("submit", async (event) => {
   send.disabled = false;
   input.focus();
 });
-</script>
+
+export async function onRequestPost({ request, env }) {
+  try {
+    if (!env.OPENAI_API_KEY) {
+      return Response.json(
+        { error: "AI key not configured." },
+        { status: 500 }
+      );
+    }
+
+    const body = await request.json();
+
+    if (!Array.isArray(body.messages)) {
+      return Response.json(
+        { error: "Invalid messages." },
+        { status: 400 }
+      );
+    }
+
+    const messages = body.messages
+      .slice(-20)
+      .filter(m =>
+        ["user", "assistant"].includes(m.role) &&
+        typeof m.content === "string"
+      )
+      .map(m => ({
+        role: m.role,
+        content: m.content.slice(0, 3000)
+      }));
+
+    const result = await fetch(
+      "https://api.openai.com/v1/responses",
+      {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${env.OPENAI_API_KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model: "gpt-4.1-mini",
+          instructions: `
+You are UZZI, a clever and funny AI assistant.
+
+PERSONALITY:
+- Funny, confident and friendly.
+- Explain difficult things simply.
+- Help with coding and education.
+- Remember the conversation context provided.
+- Give useful, accurate answers.
+- Admit when you don't know something.
+- Your signature style is black and gold.
+          `,
+          input: messages,
+          max_output_tokens: 700
+        })
+      }
+    );
+
+    const data = await result.json();
+
+    if (!result.ok) {
+      return Response.json(
+        { error: "AI service error." },
+        { status: 502 }
+      );
+    }
+
+    const answer = (data.output || [])
+      .flatMap(item => item.content || [])
+      .filter(item => item.type === "output_text")
+      .map(item => item.text)
+      .join("");
+
+    return Response.json({
+      reply: answer || "Try asking me again! 😂"
+    });
+
+  } catch (error) {
+    return Response.json(
+      { error: "Something went wrong." },
+      { status: 500 }
+    );
+  }
+}
+
+export async function onRequestPost({ request, env }) {
+  try {
+    if (!env.OPENAI_API_KEY) {
+      return Response.json(
+        { error: "AI key not configured." },
+        { status: 500 }
+      );
+    }
+
+    const body = await request.json();
+
+    if (!Array.isArray(body.messages)) {
+      return Response.json(
+        { error: "Invalid messages." },
+        { status: 400 }
+      );
+    }
+
+    const messages = body.messages
+      .slice(-20)
+      .filter(m =>
+        ["user", "assistant"].includes(m.role) &&
+        typeof m.content === "string"
+      )
+      .map(m => ({
+        role: m.role,
+        content: m.content.slice(0, 3000)
+      }));
+
+    const result = await fetch(
+      "https://api.openai.com/v1/responses",
+      {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${env.OPENAI_API_KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model: "gpt-4.1-mini",
+          instructions: `
+You are UZZI, a clever and funny AI assistant.
+
+PERSONALITY:
+- Funny, confident and friendly.
+- Explain difficult things simply.
+- Help with coding and education.
+- Remember the conversation context provided.
+- Give useful, accurate answers.
+- Admit when you don't know something.
+- Your signature style is black and gold.
+          `,
+          input: messages,
+          max_output_tokens: 700
+        })
+      }
+    );
+
+    const data = await result.json();
+
+    if (!result.ok) {
+      return Response.json(
+        { error: "AI service error." },
+        { status: 502 }
+      );
+    }
+
+    const answer = (data.output || [])
+      .flatMap(item => item.content || [])
+      .filter(item => item.type === "output_text")
+      .map(item => item.text)
+      .join("");
+
+    return Response.json({
+      reply: answer || "Try asking me again! 😂"
+    });
+
+  } catch (error) {
+    return Response.json(
+      { error: "Something went wrong." },
+      { status: 500 }
+    );
+  }
+}
+
+
+<body>
+
+<header>
+  <h1>UZZI AI</h1>
+  <p>Your AI. Your rules.</p>
+</header>
+
+<div class="chat">
+
+  <h2>Welcome to UZZI 😂</h2>
+
+  <input id="question" placeholder="Ask UZZI...">
+
+  <button onclick="askUzzi()">Send</button>
+
+  <div id="reply"></div>
+
+</div>
 
 </body>
 </html>
